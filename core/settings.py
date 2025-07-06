@@ -31,6 +31,10 @@ PUBLIC_SCHEMA_NAME = "public" # The schema name for the public tenant
 AUTH_USER_MODEL = "tenants.User" # The custom user model for the application
 TENANT_MODEL = "tenants.Tenant" # The model representing tenants in the application
 TENANT_DOMAIN_MODEL = "tenants.Domain" # The model representing tenant domains in the application 
+TENANT_USERS_DOMAIN = BASE_DOMAIN # The domain from which domain the users should be provisioned, typically the same as the base domain
+AUTHENTICATION_BACKENDS = [
+    "tenant_users.permissions.backend.UserBackend",
+] # Custom authentication backend to handle tenant-specific user permissions
 
 # Application definition
 # apps that live in public schema and are acessible to all tenants
@@ -46,9 +50,14 @@ SHARED_APPS = [
     "django_filters",
     "tenants.apps.TenantsConfig",
     "blog.apps.BlogConfig",
+    "tenant_users.permissions",
+    "tenant_users.tenants",
 ]
 # apps specific to each tenant and live in their own schema
 TENANT_APPS = [
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "tenant_users.permissions",
     "tasks.apps.TasksConfig",
 ]
 # django-tenants uses INSTALLED_APPS to sync models to the correct schema during migrations
@@ -65,6 +74,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "tenant_users.tenants.middleware.TenantAccessMiddleware", # Custom middleware to handle tenant access, must be after AuthenticationMiddleware
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
