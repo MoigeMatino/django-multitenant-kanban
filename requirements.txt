@@ -1,5 +1,12 @@
-Django==5.1.9
-psycopg2-binary==2.9.10
-djangorestframework==3.16.0
+asgiref==3.8.1
+django==5.1.9
 django-filter==25.1
-Markdown==3.8
+django-tenant-users==2.1.1
+django-tenants==3.7.0
+djangorestframework==3.16.0
+markdown==3.8
+pip==22.0.2
+psycopg2-binary==2.9.10
+setuptools==59.6.0
+sqlparse==0.5.3
+typing-extensions==4.14.0

@@ -1,15 +1,16 @@
 from django.contrib.auth.models import AbstractUser
+from tenant_users.tenants.models import TenantBase, UserProfile
 from django.db import models
 from django_tenants.models import TenantMixin, DomainMixin
 
 from core.models import TimeStampedModel
 
 
-class User(AbstractUser):
+class User(UserProfile):
     pass
 
 
-class Tenant(TenantMixin, TimeStampedModel):
+class Tenant(TenantBase, TimeStampedModel):
     name = models.CharField(max_length=100)
 
 
